@@ -79,7 +79,9 @@ if __name__ == '__main__':
     mnist = input_data.read_data_sets('MNIST_data/', one_hot=True)
 
     init = tf.global_variables_initializer()
+    # 初始化全部变量
     save = tf.train.Saver()
+    # 定义save的点
 
     with tf.Session() as sess:
         sess.run(init)
@@ -87,6 +89,7 @@ if __name__ == '__main__':
 
         plt.ion()
         for epoch in range(5000):
+            # 定义训练次数
             train_x, train_y = mnist.train.next_batch(100)
             _error, _ = sess.run([rnn.loss, rnn.optimizer], feed_dict={rnn.x: train_x, rnn.y: train_y})
 
@@ -95,7 +98,9 @@ if __name__ == '__main__':
                 test_output, _accuracy = sess.run([rnn.output, rnn.accuracy],
                                                   feed_dict={rnn.x: test_xs, rnn.y: test_ys})
                 test_out = np.argmax(test_output[2])
+                # 定义测试输出
                 test_ys = np.argmax(test_ys[2])
+                # 取出测试的标签
                 print('Labels:', test_ys, 'Test:', test_out)
                 print("epoch:{0},error:{1:.3f},accuracy:{2:.2f}%".format(epoch, _error, _accuracy * 100))
                 save.save(sess, save_path=save_ckpt)
